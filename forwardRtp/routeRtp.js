@@ -15,13 +15,7 @@ const startRtpIn = async(options) => {
     try {
         console.debug('Creating RTP IN transport . . .');
 
-        const transportOptions = {
-            listenIp: config.mediasoup.plainTransportOptions.listenIp,
-            rtcpMux    : false,
-			comedia    : true,
-            port: options.port,
-            rtcpPort: options.rtcpPort,
-        };
+        const transportOptions = config.mediasoup.plainTransportOptions.rtpIn;
         const transportId = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);
         console.info(`Created RTP IN transport - ${transportId} `);
     
@@ -46,13 +40,7 @@ const startRtpOut = async(options) => {
     try {
         console.debug('Creating RTP OUT transport . . .');
 
-        const transportOptions = {
-            listenIp: config.mediasoup.plainTransportOptions.listenIp,
-            rtcpMux: true,
-            comedia: false,
-            enableUdp: true,
-            enableTcp: true,
-        };
+        const transportOptions = config.mediasoup.plainTransportOptions.rtpOut;
         const transportId = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);
         console.info(`Created RTP OUT transport - ${transportId} `);
     

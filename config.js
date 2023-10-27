@@ -129,13 +129,26 @@ module.exports = {
 		// GStreamer).
 		// See https://mediasoup.org/documentation/v3/mediasoup/api/#PlainTransportOptions
 		plainTransportOptions : {
-			listenIp : {
-				ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
-				announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
+			rtpIn: {
+				listenIp : {
+					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
+				},			
+					rtcpMux    : false,
+					comedia    : true,
+					port: options.port,
+					rtcpPort: options.rtcpPort,
 			},
-			maxSctpMessageSize : 262144,
-			rtcpMux    : false,
-			comedia    : true,
-		}
+			rtpOut: {
+				listenIp : {
+					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
+				},            
+				rtcpMux: false,
+				comedia: true,
+				enableUdp: true,
+				enableTcp: true,
+			}
+		}			
 	}
 };
