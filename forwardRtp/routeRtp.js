@@ -71,4 +71,4 @@ const routeRtp = async(rtpInObj, rtpOutObj) => {
     return;
 }
 
-module.exports = { routeRtp };
+module.exports = { routeRtp, startRtpIn, startRtpOut };
