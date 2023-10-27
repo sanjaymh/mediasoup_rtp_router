@@ -34,7 +34,7 @@ const startRtpIn = async(options) => {
         getStatsOfTransport(transportId, 'RTP_IN');
 
         if (options.toTest) {
-            generateRtpStream({ record: 'rec_3', videoRtpPort: rtp.localPort, videoRtcpPort: rtcp.localPort });
+            generateRtpStream({ record: 'rec_2', videoRtpPort: rtp.localPort, videoRtcpPort: rtcp.localPort });
             return;
         }
     } catch (error) {
