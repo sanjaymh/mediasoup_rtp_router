@@ -136,8 +136,6 @@ module.exports = {
 				},			
 					rtcpMux    : false,
 					comedia    : true,
-					port: options.port,
-					rtcpPort: options.rtcpPort,
 			},
 			rtpOut: {
 				listenIp : {

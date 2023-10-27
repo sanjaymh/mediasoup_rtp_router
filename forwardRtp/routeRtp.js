@@ -16,6 +16,8 @@ const startRtpIn = async(options) => {
         console.debug('Creating RTP IN transport . . .');
 
         const transportOptions = config.mediasoup.plainTransportOptions.rtpIn;
+        transportOptions.port = options.port;
+        transportOptions.rtcpPort = options.rtcpPort;
         const transportId = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);
         console.info(`Created RTP IN transport - ${transportId} `);
     
