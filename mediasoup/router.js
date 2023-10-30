@@ -97,6 +97,10 @@ class Routers {
         });
         console.log('producer -------------------> ', videoProducer.id);
         this.producers.push(videoProducer);
+        videoProducer.enableTraceEvent([ 'keyframe' ]);
+        videoProducer.on('trace', (trace) => {
+            console.log('producer trace: : : : : : : : : ', trace);
+        })
         return { rtp: transport.tuple, rtcp: transport.rtcpTuple }
     }
 

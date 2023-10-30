@@ -134,8 +134,8 @@ module.exports = {
 					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
 					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
 				},			
-					rtcpMux    : false,
-					comedia    : true,
+				rtcpMux    : false,
+				comedia    : true,
 			},
 			rtpOut: {
 				listenIp : {
