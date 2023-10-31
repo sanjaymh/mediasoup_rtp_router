@@ -6,6 +6,7 @@ class Routers {
         this.rtpTransports = new Map();
         this.webrtcTransports = new Map();
         this.producers = [];
+        this.consumers = [];
         this.router = null;
     }
 
@@ -109,7 +110,7 @@ class Routers {
         if (transport) {
             this.producers.map(async (producer) => {
                 console.log('producer --------------->', producer.id);
-                await transport.consume({
+                const consumer = await transport.consume({
                     producerId: producer.id,
                     rtpCapabilities: {
                         codecs :
@@ -130,9 +131,19 @@ class Routers {
                         ],
                         encodings : [ { ssrc: 22222222 } ]
                     },
-                })
+                });
+                this.consumers.push[consumer];
             })
             return { rtp: transport.tuple, rtcp: transport.rtcpTuple }
+        }
+    }
+
+    requestKeyFrames() {
+        try {
+            console.log('Requesting key frame . . . . . . . . . . . . .');
+            this.consumers.forEach(async (consumer) => await consumer.requestKeyFrame());
+        } catch (error) {
+            console.log('Error while requesting keyFrames', error)
         }
     }
 }
