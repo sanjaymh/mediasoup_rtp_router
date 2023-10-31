@@ -132,7 +132,7 @@ module.exports = {
 			rtpIn: {
 				listenIp : {
 					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
-					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
+					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '65.1.2.59'
 				},			
 				rtcpMux    : false,
 				comedia    : true,
@@ -140,10 +140,10 @@ module.exports = {
 			rtpOut: {
 				listenIp : {
 					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
-					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '127.0.0.1'
+					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '65.1.2.59'
 				},            
-				rtcpMux: true,
-				comedia: false,
+				rtcpMux: false,
+				comedia: true,
 				enableUdp: true,
 				enableTcp: true,
 			}

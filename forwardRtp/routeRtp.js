@@ -26,7 +26,7 @@ const startRtpIn = async(options) => {
 
         // produceRtp in to mediasoup
         const {rtp, rtcp} = await router.produceInToMediasoup(transportId);
-        console.log('rtp', rtp, 'rtcp', rtcp)
+        console.log('rtp - in', rtp, 'rtcp - in', rtcp)
         getStatsOfTransport(transportId, 'RTP_IN');
 
         if (options.toTest) {
@@ -54,8 +54,8 @@ const startRtpOut = async(options) => {
         await router.connectTransport(TRANSPORT_TYPE.RTP, transportId, options);
     
         // cosume rtp -> point stream to a ip and 
-        await router.consumeFromMediaSoup(transportId);
-
+        const {rtp, rtcp} = await router.consumeFromMediaSoup(transportId);
+        console.log('rtp - out', rtp, 'rtcp - out', rtcp);
         getStatsOfTransport(transportId, 'RTP_OUT'); 
     } catch (error) {
         console.error('Error in startRtpOut: ', error);

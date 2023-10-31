@@ -132,6 +132,7 @@ class Routers {
                     },
                 })
             })
+            return { rtp: transport.tuple, rtcp: transport.rtcpTuple }
         }
     }
 }
