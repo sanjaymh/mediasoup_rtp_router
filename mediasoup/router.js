@@ -70,7 +70,7 @@ class Routers {
             const connectOptions = {
                 ...options,
             }
-            await transport.connect({ ...options });
+            await transport.connect({ ...connectOptions });
         } catch (error) {
             console.error('Error while connecting transport: ', error);
         }
@@ -82,15 +82,20 @@ class Routers {
             kind          : 'video',
             rtpParameters : {
                 codecs :[{
-                        mimeType     : 'video/h264',
+                        mimeType     : 'video/VP8',
                         clockRate    : 90000,
                         payloadType  : 102,
-                        rtcpFeedback : [ ], // FFmpeg does not support NACK nor PLI/FIR.
+                        rtcpFeedback : [{ type: 'nack' },
+                        { type: 'nack', parameter: 'pli' },
+                        { type: 'nack', parameter: 'sli' },
+                        { type: 'nack', parameter: 'rpsi' },
+                        { type: 'nack', parameter: 'app' },
+                        { type: 'ccm', parameter: 'fir' },
+                        { type: 'ack', parameter: 'rpsi' },
+                        { type: 'ack', parameter: 'app' },
+                        { type: 'goog-remb' }], // FFmpeg does not support NACK nor PLI/FIR.
                         parameters   : {
-                            'packetization-mode'      : 1,
-                            'profile-level-id'        : '42e01f',
-                            'level-asymmetry-allowed' : 1,
-                            'x-google-start-bitrate'  : 1000
+                            'x-google-start-bitrate' : 1000
                         }
                     }],
                 encodings : [ { ssrc: 22222222 } ]
@@ -116,16 +121,21 @@ class Routers {
                         codecs :
                         [
                             {
-                                mimeType     : 'video/h264',
+                                mimeType     : 'video/vp8',
                                 clockRate    : 90000,
                                 payloadType  : 102,
-                                rtcpFeedback : [ ],
+                                rtcpFeedback : [{ type: 'nack' },
+                                { type: 'nack', parameter: 'pli' },
+                                { type: 'nack', parameter: 'sli' },
+                                { type: 'nack', parameter: 'rpsi' },
+                                { type: 'nack', parameter: 'app' },
+                                { type: 'ccm', parameter: 'fir' },
+                                { type: 'ack', parameter: 'rpsi' },
+                                { type: 'ack', parameter: 'app' },
+                                { type: 'goog-remb' }],
                                 parameters   :
                                 {
-                                    'packetization-mode'      : 1,
-                                    'profile-level-id'        : '42e01f',
-                                    'level-asymmetry-allowed' : 1,
-                                    'x-google-start-bitrate'  : 1000
+                                    'x-google-start-bitrate' : 1000
                                 }
                             }
                         ],

@@ -61,6 +61,7 @@ const startRtpOut = async(options) => {
         setTimeout(() => {
             router.requestKeyFrames();
         }, 30000);
+        
     } catch (error) {
         console.error('Error in startRtpOut: ', error);
     }
