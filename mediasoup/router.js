@@ -84,7 +84,7 @@ class Routers {
                 codecs :[{
                         mimeType     : 'video/VP8',
                         clockRate    : 90000,
-                        payloadType  : 102,
+                        payloadType  : 120,
                         rtcpFeedback : [{ type: 'nack' },
                         { type: 'nack', parameter: 'pli' },
                         { type: 'nack', parameter: 'sli' },
@@ -98,12 +98,12 @@ class Routers {
                             'x-google-start-bitrate' : 1000
                         }
                     }],
-                encodings : [ { ssrc: 22222222 } ]
+                encodings : [ { ssrc: 0xFAFEC8EC } ]
             }
         });
         console.log('producer -------------------> ', videoProducer.id);
         this.producers.push(videoProducer);
-        videoProducer.enableTraceEvent([ 'keyframe' ]);
+        videoProducer.enableTraceEvent([ 'keyframe', 'rtp', 'nack', 'pli', 'fir' ]);
         videoProducer.on('trace', (trace) => {
             console.log('producer trace: : : : : : : : : ', trace);
         })
@@ -123,7 +123,7 @@ class Routers {
                             {
                                 mimeType     : 'video/vp8',
                                 clockRate    : 90000,
-                                payloadType  : 102,
+                                payloadType  : 120,
                                 rtcpFeedback : [{ type: 'nack' },
                                 { type: 'nack', parameter: 'pli' },
                                 { type: 'nack', parameter: 'sli' },
@@ -139,7 +139,7 @@ class Routers {
                                 }
                             }
                         ],
-                        encodings : [ { ssrc: 22222222 } ]
+                        encodings : [ { ssrc: 0xFAFEC8EC } ]
                     },
                 });
                 this.consumers.push[consumer];
