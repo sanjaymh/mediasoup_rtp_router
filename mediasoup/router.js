@@ -80,6 +80,7 @@ class Routers {
        const transport = this.rtpTransports.get(transportId);
        const videoProducer = await transport.produce({
             kind          : 'video',
+	    type          : 'simulcast',
             rtpParameters : {
                 codecs :[{
                         mimeType     : 'video/VP8',
@@ -98,12 +99,16 @@ class Routers {
                             'x-google-start-bitrate' : 1000
                         }
                     }],
-                encodings : [ { ssrc: 0xFAFEC8EC } ]
+		    encodings : [
+			    { ssrc: 111112 },
+                            { ssrc: 111111 },
+                            { ssrc: 111110 }
+		    ]
             }
         });
         console.log('producer -------------------> ', videoProducer.id);
         this.producers.push(videoProducer);
-        videoProducer.enableTraceEvent([ 'keyframe', 'rtp', 'nack', 'pli', 'fir' ]);
+        videoProducer.enableTraceEvent([ 'keyframe'/**, 'rtp', 'nack', 'pli', 'fir' **/]);
         videoProducer.on('trace', (trace) => {
             console.log('producer trace: : : : : : : : : ', trace);
         })
@@ -117,8 +122,9 @@ class Routers {
                 console.log('producer --------------->', producer.id);
                 const consumer = await transport.consume({
                     producerId: producer.id,
-                    rtpCapabilities: {
-                        codecs :
+                    type: 'simulcast',
+		    rtpCapabilities: {
+                    codecs :
                         [
                             {
                                 mimeType     : 'video/vp8',
@@ -139,7 +145,7 @@ class Routers {
                                 }
                             }
                         ],
-                        encodings : [ { ssrc: 0xFAFEC8EC } ]
+                        encodings : [{ ssrc: 222220, scalabilityMode: 'L3T1' }]
                     },
                 });
                 this.consumers.push[consumer];
