@@ -80,7 +80,7 @@ class Routers {
        const transport = this.rtpTransports.get(transportId);
        const videoProducer = await transport.produce({
             kind          : 'video',
-	    type          : 'simulcast',
+	        type          : 'simulcast',
             rtpParameters : {
                 codecs :[{
                         mimeType     : 'video/VP8',
@@ -101,8 +101,8 @@ class Routers {
                     }],
 		    encodings : [
 			    { ssrc: 111112 },
-                            { ssrc: 111111 },
-                            { ssrc: 111110 }
+                { ssrc: 111111 },
+                { ssrc: 111110 }
 		    ]
             }
         });
@@ -161,6 +161,27 @@ class Routers {
         } catch (error) {
             console.log('Error while requesting keyFrames', error)
         }
+    }
+
+    async changeSpatialLayer(spatialLayer) {
+        console.log('changing spacial layer . . . . . . . . . . . . .');
+        this.consumers.forEach(async (consumer) => {
+            await consumer.setPreferredLayers({ spatialLayer });
+        });
+        this.initiateProducerStats();
+    }
+
+    getProducerStats() {
+        this.producers.forEach(async (producer) => {
+            const producerStats = await producer.getStats();
+            console.log('Stats of Producer : : : : : :', producerStats);
+        })
+    }
+
+    initiateProducerStats() {
+        setTimeout(async() => {
+            await this.getProducerStats()
+        }, 5000);
     }
 }
 

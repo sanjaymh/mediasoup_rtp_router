@@ -68,6 +68,24 @@ const startRtpOut = async(options) => {
     
 }
 
+let track = 0;   
+const changeTrack = async() => {
+    try {
+        if (track === 2) {
+            track = 0;
+            console.log('resetting track . . .');
+        } else {
+            track += 1;
+        }
+        await router.changeSpatialLayer(track);
+        return track;
+    } catch (error) {
+        console.error('Error in changeTrack: ', error);
+    }
+    
+}
+
+
 const routeRtp = async(rtpInObj, rtpOutObj) => {
     // create rtp in
     await startRtpIn(rtpInObj);
@@ -76,4 +94,4 @@ const routeRtp = async(rtpInObj, rtpOutObj) => {
     return;
 }
 
-module.exports = { routeRtp, startRtpIn, startRtpOut };
+module.exports = { routeRtp, startRtpIn, startRtpOut, changeTrack };
