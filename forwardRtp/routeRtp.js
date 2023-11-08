@@ -58,9 +58,9 @@ const startRtpOut = async(options) => {
         console.log('rtp - out', rtp, 'rtcp - out', rtcp);
         getStatsOfTransport(transportId, 'RTP_OUT'); 
         
-        setTimeout(() => {
-            router.requestKeyFrames();
-        }, 30000);
+        // setTimeout(() => {
+        //     router.requestKeyFrames();
+        // }, 30000);
         
     } catch (error) {
         console.error('Error in startRtpOut: ', error);

@@ -150,6 +150,9 @@ class Routers {
                     },
                 });
                 this.consumers.push[consumer];
+                consumer.on('layerschange', () => {
+                    console.log('Layers changed $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $')
+                })
             })
             return { rtp: transport.tuple, rtcp: transport.rtcpTuple }
         }
