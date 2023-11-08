@@ -164,7 +164,7 @@ class Routers {
         }
     }
 
-    async changeSpatialLayer(spatialLayer) {
+    async changeSpatialLayer() {
         console.log('changing spacial layer . . . . . . . . . . . . .');
         if (this.spatialLayer === 2) {
             this.spatialLayer = 0;
@@ -172,7 +172,7 @@ class Routers {
             this.spatialLayer += 1;
         }
         this.consumers.forEach(async (consumer) => {
-            await consumer.setPreferredLayers(spatialLayer);
+            await consumer.setPreferredLayers({spatialLayer: this.spatialLayer});
         });
         this.initiateProducerStats();
         return this.spatialLayer;
