@@ -67,17 +67,10 @@ const startRtpOut = async(options) => {
     }
     
 }
-
-let track = 0;   
+ 
 const changeTrack = async() => {
     try {
-        if (track === 2) {
-            track = 0;
-            console.log('resetting track . . .');
-        } else {
-            track += 1;
-        }
-        await router.changeSpatialLayer(track);
+        const track = await router.changeSpatialLayer();
         return track;
     } catch (error) {
         console.error('Error in changeTrack: ', error);

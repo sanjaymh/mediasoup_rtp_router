@@ -8,6 +8,7 @@ class Routers {
         this.producers = [];
         this.consumers = [];
         this.router = null;
+        this.spatialLayer = 0;
     }
 
     async createRouter(mediasoupWorker) {
@@ -165,10 +166,16 @@ class Routers {
 
     async changeSpatialLayer(spatialLayer) {
         console.log('changing spacial layer . . . . . . . . . . . . .');
+        if (this.spatialLayer === 2) {
+            this.spatialLayer = 0;
+        } else {
+            this.spatialLayer += 1;
+        }
         this.consumers.forEach(async (consumer) => {
-            await consumer.setPreferredLayers({ spatialLayer });
+            await consumer.setPreferredLayers(spatialLayer);
         });
         this.initiateProducerStats();
+        return this.spatialLayer;
     }
 
     getProducerStats() {

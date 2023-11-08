@@ -35,7 +35,6 @@ app.post('/rtpIn', async(req, res) => {
 
 app.get('/changeTrack', async(req, res) => {
     try {
-        const rtpInObj = req.body;
         console.log(`in route '/changeTrack' . . .`);
         const track = await changeTrack();
          res.status(201).json({spatialLayer: track});
