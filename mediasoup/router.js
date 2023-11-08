@@ -177,21 +177,28 @@ class Routers {
         this.consumers.forEach(async (consumer) => {
             await consumer.setPreferredLayers({spatialLayer: this.spatialLayer});
         });
-        this.initiateProducerStats();
+        this.initiateProducerStats('changeSpatialLayer');
         return this.spatialLayer;
     }
 
-    getProducerStats() {
+    getProducerStats(initiator) {
         this.producers.forEach(async (producer) => {
             const producerStats = await producer.getStats();
-            console.log('Stats of Producer : : : : : :', producerStats);
+            console.log(`Stats of Producer  initiated by ${initiator} . . .`, producerStats);
         })
     }
 
-    initiateProducerStats() {
+    initiateProducerStats(initiator) {
         setTimeout(async() => {
-            await this.getProducerStats()
-        }, 5000);
+            await this.getProducerStats(initiator)
+        }, 3000);
+    }
+
+    changeProfile(profile) {
+        this.consumers.forEach(async (consumer) => {
+            await consumer.setPreferredProfile(profile);
+        });
+        this.initiateProducerStats('changeProfile');
     }
 }
 

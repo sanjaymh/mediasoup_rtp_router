@@ -70,12 +70,23 @@ const startRtpOut = async(options) => {
  
 const changeTrack = async() => {
     try {
+        console.log('changing track -> inside changeTrack method . . .')
         const track = await router.changeSpatialLayer();
         return track;
     } catch (error) {
         console.error('Error in changeTrack: ', error);
     }
     
+}
+
+const changeProfile = async(profile) => {
+    try {
+        console.log('change profile to ', profile);
+        await router.changeProfile(profile);
+        return profile;
+    } catch (error) {
+        console.error('Error in changeProfile: ', error);
+    }
 }
 
 
@@ -87,4 +98,4 @@ const routeRtp = async(rtpInObj, rtpOutObj) => {
     return;
 }
 
-module.exports = { routeRtp, startRtpIn, startRtpOut, changeTrack };
+module.exports = { routeRtp, startRtpIn, startRtpOut, changeTrack, changeProfile };

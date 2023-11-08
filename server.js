@@ -3,7 +3,7 @@ const express = require('express');
 require('dotenv').config();
 const bodyparser = require('body-parser');
 const { runMediasoupWorkers, getMediasoupWorker } = require('./mediasoup/worker');
-const { startRtpOut, startRtpIn, changeTrack } = require('./forwardRtp/routeRtp');
+const { startRtpOut, startRtpIn, changeTrack, changeProfile } = require('./forwardRtp/routeRtp');
 
 const app = express();
 
@@ -37,9 +37,21 @@ app.get('/changeTrack', async(req, res) => {
     try {
         console.log(`in route '/changeTrack' . . .`);
         const track = await changeTrack();
-         res.status(201).json({spatialLayer: track});
+        res.status(201).json({spatialLayer: track});
     } catch (error) {
         console.error('Error in \'/changeTrack\' ', error);
+        res.status(500).json(error);
+    }
+})
+
+app.post('/changeProfile', async(req, res) => {
+    try {
+        const { profile } = req.body;
+        console.log(`in route '/changeProfile' . . .`);
+        const changedProfile = await changeProfile(profile);
+        res.status(201).json({profile: changedProfile });
+    } catch (error) {
+        console.error('Error in \'/changeProfile\' ', error);
         res.status(500).json(error);
     }
 })
