@@ -7,10 +7,10 @@ const participantManager = require('./participantManager');
 const logger = console;
 
 class Subscriber {
-    constructor(subscriberId, publisherId, codec, payloadType, producerIds, remoteIp, data) {
+    constructor(subscriberId, publisherId, codec, payloadType, producerIds, remoteIp, data, rtcpPort) {
         console.log('test log', subscriberId, payloadType, data)
         this.subscriberId= subscriberId;
-        // this.rtcpPort = rtcpPort;
+        this.rtcpPort = rtcpPort;
         this.data = data;
         this.codec = codec;
         this.payloadType = payloadType;
@@ -27,7 +27,7 @@ class Subscriber {
         const transportOptions = { ...config.mediasoup.plainTransportOptions.rtpOut };
         await Promise.all(this.data.map(async (data, i) => {
             const { port, rid, ssrc } = data;
-            if (i === 0 && this.rtcpPort) {
+            if (/**i === 0 && */ this.rtcpPort) {
                 transportOptions.rtcpPort = this.rtcpPort;
             }
             const transport = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);

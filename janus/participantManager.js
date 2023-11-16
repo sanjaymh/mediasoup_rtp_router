@@ -25,7 +25,7 @@ class Manager {
     createSubscriber(subscriberData) {
         const { subscriberId, publisherId, rtcpPort, remoteIp, data } = subscriberData;
         const publisher = this.publishers[publisherId];
-        const subscriber = new Subscriber(subscriberId, publisherId, publisher.codec, publisher.payloadType, publisher.producersIds, remoteIp, data );
+        const subscriber = new Subscriber(subscriberId, publisherId, publisher.codec, publisher.payloadType, publisher.producersIds, remoteIp, data, rtcpPort );
         this.subscribers[subscriberId] = subscriber;
         return subscriber;
     };
