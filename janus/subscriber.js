@@ -88,6 +88,7 @@ class Subscriber {
     
     async connectTransportsToRemote(ports) {
         await Promise.all(this.transportsData.map(async (transportData, idx) => {
+            logger.debug(`connecting transport ${transportData.transport.id} with ${this.remoteIp} and port ${ports[idx]} `);
             const connectOptions = {
                 ip: this.remoteIp, port: ports[idx]
             };
@@ -102,6 +103,14 @@ class Subscriber {
             await this.connectTransportsToRemote(ports);     
     };
 
+    async getProducerStats() {
+        setTimeout(() => {
+            this.transportsData.forEach(async (td) => {
+                logger.info(`stats of transport ${td.transport.id} with rid ${td.rid} -> ${JSON.stringify(await td.transport.getStats())}`)
+            })
+        }, 3000);
+    }
+
     async subscribe(ports) {
         // create consumer transports
         await this.createTransports();
@@ -114,6 +123,8 @@ class Subscriber {
         await Promise.all(producerIdsToConsume.map(async (producerId, idx) => {
                 await this.createConsumers(producerId, idx);
         }))
+
+        this.getProducerStats();
         logger.info(`Created consumers in order of rid 'low', 'mid', 'high': ${JSON.stringify(this.consumerIds)}`);
     }
 }
