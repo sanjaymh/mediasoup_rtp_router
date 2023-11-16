@@ -2,7 +2,6 @@ const config = require("../config");
 const { TRANSPORT_TYPE } = require("../lib/constants");
 const { getRtpParameters } = require("../lib/utils");
 const router = require("../mediasoup/router");
-const { createTransport, produceInToMediasoup } = require("../mediasoup/router");
 const participantManager = require('./participantManager');
 const logger = console;
 
@@ -94,7 +93,7 @@ class Subscriber {
                 ip: this.remoteIp, port: ports[idx]
             };
             if (transportData.rtcpPort) {
-                connectOptions.rtcpPort = transportData.rtcpPort;
+                connectOptions.rtcpPort = this.rtcpPort;
             }
             await transportData.transport.connect(connectOptions)
         }));
