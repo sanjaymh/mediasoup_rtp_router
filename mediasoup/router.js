@@ -26,9 +26,8 @@ class Routers {
     async createRtpTransport(options) {
         try {
             const transport = await this.router.createPlainTransport(options);
-            console.log('transport rtp : : :', transport.id);
             this.rtpTransports.set(transport.id, transport);
-            return transport.id;   
+            return transport;   
         } catch (error) {
             console.error('Error while creating rtpTransport: ', error);        
         }
@@ -50,9 +49,9 @@ class Routers {
 
     async createTransport(type, transportOptions) {
         if (type === TRANSPORT_TYPE.RTP) {
-            return await this.createRtpTransport(transportOptions);
+            return this.createRtpTransport(transportOptions);
         } else {
-            return await this.createWebRtcTransport(transportOptions);
+            return this.createWebRtcTransport(transportOptions);
         }
     }
     
@@ -100,11 +99,11 @@ class Routers {
                             'x-google-start-bitrate' : 1000
                         }
                     }],
-		    encodings : [
-			    { ssrc: 111112 },
-                { ssrc: 111111 },
-                { ssrc: 111110 }
-		    ]
+                    encodings : [
+                        { ssrc: 111112 },
+                        { ssrc: 111111 },
+                        { ssrc: 111110 }
+                    ]
             }
         });
         console.log('producer -------------------> ', videoProducer.id);

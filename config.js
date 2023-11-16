@@ -149,6 +149,34 @@ module.exports = {
 				enableUdp: true,
 				enableTcp: true,
 			}
-		}			
+		},
+        // some generic options for producer and consumer
+		producerConsumerOptions: {
+			payloadType: 96,
+			mimeTypeVP8: 'video/VP8',
+			mimeTypeH264: 'video/h264',
+			clockRate: 90000,
+			rtcpFeedback : [{ type: 'nack' },
+					{ type: 'nack', parameter: 'pli' },
+					{ type: 'nack', parameter: 'sli' },
+					{ type: 'nack', parameter: 'rpsi' },
+					{ type: 'nack', parameter: 'app' },
+					{ type: 'ccm', parameter: 'fir' },
+					{ type: 'ack', parameter: 'rpsi' },
+					{ type: 'ack', parameter: 'app' },
+					{ type: 'goog-remb' }
+				],
+			parametersVP8: {
+					'x-google-start-bitrate' : 1000
+			},
+			parametersH264: {
+				'packetization-mode'      : 1,
+				'profile-level-id'        : '42e01f',
+				'level-asymmetry-allowed' : 1,
+				'x-google-start-bitrate'  : 1000
+			}
+		},
+
+		codec: 'VP8',
 	}
 };
