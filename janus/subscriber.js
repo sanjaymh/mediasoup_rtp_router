@@ -88,11 +88,11 @@ class Subscriber {
     
     async connectTransportsToRemote(ports) {
         await Promise.all(this.transportsData.map(async (transportData, idx) => {
-            logger.debug(`connecting transport ${transportData.transport.id} with ${this.remoteIp} and port ${ports[idx]} `);
+            logger.debug(`connecting transport ${transportData.transport.id} with ${this.remoteIp} and port ${ports[idx]}, rtcpPort: ${this.rtcpPort} `);
             const connectOptions = {
                 ip: this.remoteIp, port: ports[idx]
             };
-            if (transportData.rtcpPort) {
+            if (this.rtcpPort) {
                 connectOptions.rtcpPort = this.rtcpPort;
             }
             await transportData.transport.connect(connectOptions)
