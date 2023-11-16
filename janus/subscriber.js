@@ -24,7 +24,7 @@ class Subscriber {
 
     async createTransports() {
         logger.info(`creating transports for subscriber ${this.subscriberId}. . . `);
-        const transportOptions = { ...config.mediasoup.plainTransportOptions.rtpIn };
+        const transportOptions = { ...config.mediasoup.plainTransportOptions.rtpOut };
         await Promise.all(this.data.map(async (data, i) => {
             const { port, rid, ssrc } = data;
             if (i === 0 && this.rtcpPort) {
@@ -81,9 +81,10 @@ class Subscriber {
         const { transport, ssrc } = this.transportsData[idx];
         consumerOptions.rtpCapabilities.encodings.push({ ssrc });
         consumerOptions.producerId = producerId;
-        console.log('consumer options -----------', JSON.stringify(consumerOptions))
+        console.log('consumer options ----------->', JSON.stringify(consumerOptions))
         this.transportsData[idx]['consumer'] = await transport.consume(consumerOptions);
         this.consumerIds[idx] = this.transportsData[idx].consumer.id;
+        logger.debug(`consumer ${this.consumerIds[idx]} created for transport ${idx} for port ${this.transportsData.port}`);
     }
     
     async connectTransportsToRemote(ports) {
@@ -100,7 +101,7 @@ class Subscriber {
     };
 
     async connectTransports(ports) {
-            await this.connectTransportsToRemote(ports);     
+        await this.connectTransportsToRemote(ports);     
     };
 
     async getProducerStats() {
@@ -125,7 +126,7 @@ class Subscriber {
         }))
 
         this.getProducerStats();
-        logger.info(`Created consumers in order of rid 'low', 'mid', 'high': ${JSON.stringify(this.consumerIds)}`);
+        logger.info(`Created consumers in order of rid 'low', 'mid', 'high': ${JSON.stringify(this.consumerIds)}, ssrc: ${this.transportsData.ssrc}`);
     }
 }
 

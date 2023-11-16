@@ -75,11 +75,12 @@ class Publisher {
      */
     async createProducers() {
         const producerOptions = getRtpParameters(config.mediasoup.codec, 'producer');
-        await Promise.all(this.transportsData.map(async (transportData, i) => {
+        await Promise.all(this.transportsData.map(async (transportData, idx) => {
             const {ssrc, transport} = transportData;
             producerOptions.rtpParameters.encodings.push({ ssrc });
             transportData['producer'] = await transport.produce(producerOptions);
-            this.producersIds[i] = transportData.producer.id;
+            this.producersIds[idx] = transportData.producer.id;
+            logger.debug(`producer ${this.producersIds[idx]} created for transport ${idx} for port: ${this.transportsData.port}, ssrc: ${this.transportsData.ssrc}`);
         }));
         logger.info(`Created producers in order of rid 'low', 'mid', 'high': ${JSON.stringify(this.producersIds)}`);
     }
