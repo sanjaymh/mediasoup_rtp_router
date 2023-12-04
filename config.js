@@ -130,20 +130,32 @@ module.exports = {
 		// See https://mediasoup.org/documentation/v3/mediasoup/api/#PlainTransportOptions
 		plainTransportOptions : {
 			rtpIn: {
-				listenIp : {
-					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
-					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '192.168.0.220'
-				},			
+				listenInfo: {
+				    protocol: 'udp',
+                                    ip: process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+                                    announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || 'localhost'
+				},
+				rtcpListenInfo: {
+                                    protocol: 'udp',
+				    ip: process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+				    announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || 'localhost'
+				},
 				rtcpMux    : false,
 				comedia    : true,
 				enableUdp  : true,
 				enableTcp  : true,
 			},
 			rtpOut: {
-				listenIp : {
-					ip          : process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
-					announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '192.168.0.220'
-				},            
+				listenInfo: {
+                                    protocol: 'udp',
+                                    ip: process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+                                    announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '192.168.0.220'
+                                },
+				rtcpListenInfo: {
+                                    protocol: 'udp',
+                                    ip: process.env.MEDIASOUP_LISTEN_IP || '0.0.0.0',
+                                    announcedIp : process.env.MEDIASOUP_ANNOUNCED_IP || '192.168.0.220'
+                                },
 				rtcpMux: false,
 				comedia: false,
 				enableUdp: true,

@@ -17,14 +17,23 @@ class Publisher {
     }
 
     async createTransports() {
-        logger.info(`creating transports for publisher ${this.publisherId}. . . `);
-        const transportOptions = { ...config.mediasoup.plainTransportOptions.rtpIn };
-        await Promise.all(this.data.map(async (data, i) => {
+        logger.info(`creating transports for publisher ${this.publisherId}. . . `); 
+	await Promise.all(this.data.map(async (data, i) => {
+            const transportOptions = JSON.parse(JSON.stringify(config.mediasoup.plainTransportOptions.rtpIn));
             const { port, rid, ssrc } = data;
-            transportOptions.port = port;
-            if (i === 0 && this.rtcpPort) {
-                transportOptions.rtcpPort = this.rtcpPort;
-            }
+            
+	    transportOptions.listenInfo.port = port;
+	    // transportOptions.rtcpListenInfo.port = this.rtcpPort;
+	    // transportOptions.port = port;
+	    // transportOptions.rtcpPort = this.rtcpPort;
+	    if (i === 0 && this.rtcpPort) {
+	       console.log('i ------------------------------>', i);
+               // transportOptions.rtcpPort = this.rtcpPort;
+	       transportOptions.rtcpListenInfo.port = this.rtcpPort;
+            } else {
+                delete transportOptions.rtcpListenInfo;
+	    }
+	    console.log('transportOptions ---------------------->', transportOptions);
             const transport = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);
             logger.debug(`Created transport for publisher ${this.publisherId} ${transport.id}, rid - ${rid}`)
             let transportData = {};
@@ -79,7 +88,15 @@ class Publisher {
             const {ssrc, transport} = transportData;
             producerOptions.rtpParameters.encodings.push({ ssrc });
             transportData['producer'] = await transport.produce(producerOptions);
-            this.producersIds[idx] = transportData.producer.id;
+            
+            // enable trace events
+            await transportData['producer'].enableTraceEvent(['keyframe', 'nack', 'pli']);
+            transportData['producer'].on("trace", (trace) => {
+            // trace.type can be "rtp" or "pli".
+                logger.debug(`trace producer--o-o-o-o-o-o-o--o-o-o-o-o-o-o--o-o-o-o-o-o- ${JSON.stringify(trace)}`);
+            });
+
+	    this.producersIds[idx] = transportData.producer.id;
             logger.debug(`producer ${this.producersIds[idx]} created for transport ${idx} for port: ${this.transportsData.port}, ssrc: ${this.transportsData.ssrc}`);
         }));
         logger.info(`Created producers in order of rid 'low', 'mid', 'high': ${JSON.stringify(this.producersIds)}`);

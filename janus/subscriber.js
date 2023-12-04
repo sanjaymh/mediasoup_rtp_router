@@ -23,12 +23,20 @@ class Subscriber {
 
     async createTransports() {
         logger.info(`creating transports for subscriber ${this.subscriberId}. . . `);
-        const transportOptions = { ...config.mediasoup.plainTransportOptions.rtpOut };
         await Promise.all(this.data.map(async (data, i) => {
-            const { port, rid, ssrc } = data;
-            if (/**i === 0 && */ this.rtcpPort) {
-                transportOptions.rtcpPort = this.rtcpPort;
+            const transportOptions = JSON.parse(JSON.stringify(config.mediasoup.plainTransportOptions.rtpOut));
+	    const { port, rid, ssrc } = data;
+	    transportOptions.listenInfo.port = port;
+	    // transportOptions.rtcpListenInfo.port = this.rtcpPort;
+            // transportOptions.port = port;
+            // transportOptions.rtcpPort = this.rtcpPort;
+            if (i === 0 && this.rtcpPort) {
+                // transportOptions.rtcpPort = this.rtcpPort;
+		transportOptions.rtcpListenInfo.port = this.rtcpPort;
+	    } else {
+                delete transportOptions.rtcpListenInfo;
             }
+	    console.log('transportOptions ---------------------->', transportOptions);
             const transport = await router.createTransport(TRANSPORT_TYPE.RTP, transportOptions);
             let transportData = {};
             transportData['transport'] = transport;
@@ -82,7 +90,14 @@ class Subscriber {
         consumerOptions.producerId = producerId;
         console.log('consumer options ----------->', JSON.stringify(consumerOptions))
         this.transportsData[idx]['consumer'] = await transport.consume(consumerOptions);
-        this.consumerIds[idx] = this.transportsData[idx].consumer.id;
+        
+	// enable trace events
+        await this.transportsData[idx]['consumer'].enableTraceEvent(['keyframe', 'nack', 'pli']);
+        this.transportsData[idx]['consumer'].on('trace', (trace) => {
+            logger.debug(`trace consumer -o-o-o-o-o-o-o--o-o-o-o-o-o-o--o-o-o-o-o-o- ${JSON.stringify(trace)}`);
+        });
+	
+	this.consumerIds[idx] = this.transportsData[idx].consumer.id;
         logger.debug(`consumer ${this.consumerIds[idx]} created for transport ${idx} for port ${this.transportsData.port}`);
     }
     
